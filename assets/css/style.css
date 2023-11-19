@@ -1,0 +1,81 @@
+html {
+    font-size: 10px;
+}
+
+header {
+    height: 5%;
+}
+
+nav {
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 2rem;
+    justify-content: space-evenly;
+}
+
+body {
+    height: 100%;
+}
+
+main {
+    height: 90%;
+    justify-content: center;
+    padding-bottom: 10%;
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 750;
+    line-height: 2em;
+}
+
+h2 {
+    font-size: 3rem;
+    line-height: 2em;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+article p {
+    font-size: 1.6rem;
+    line-height: 2em;
+}
+
+footer {
+    height: 5%;
+    justify-content: center;
+    align-items: center;
+}
+
+.hlClr {
+    background-color: yellow;
+}
+
+.row {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.col {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+#start {
+    height: 50px;
+    width: 150px;
+    margin: 2rem;
+    border-radius: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    background-color: rgb(15, 240, 15);
+    box-shadow: -3px 3px 5px;
+}
+
+/* */
+main {
+    border: 1px solid blue;
+}

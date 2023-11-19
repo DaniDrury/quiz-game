@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="row">
+            <a href="see high scores">High Scores</a>
+            <div id="timer" class="hlClr">Time: <span id="timeLeft">0</span></div>
+        </nav>
+    </header>
+
+    <main class="col">
+        <article class="col" id="intro">
+            <h1>Coding Quiz Game</h1>
+            <h2>Click Start to Beging Your Quiz</h2>
+            <p>You will have 1 minute to answer 5 questions. For each wrong answer, 5 seconds will be deducted from the clock.</p>
+            <button id="start">Start Quiz</button>
+        </article>
+        <section id="quiz">
+            <article id="question"></article>
+            <section>
+                <ol id="options">
+                    <!-- <li><button id="opt1"></button></li>
+                    <li><button id="opt2"></button></li>
+                    <li><button id="opt3"></button></li>
+                    <li><button id="opt4"></button></li> -->
+                </ol>
+            </section>
+        </section>
+    </main>
+    <footer class="row">
+        <h3>&copy DND Web Development 2023</h3>
+    </footer>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
