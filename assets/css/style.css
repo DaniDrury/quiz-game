@@ -20,6 +20,7 @@ body {
 main {
     height: 90%;
     justify-content: center;
+    align-items: center;
     padding-bottom: 10%;
 }
 
@@ -36,6 +37,10 @@ h2 {
 
 h3 {
     font-size: 1.5rem;
+}
+
+article {
+    align-items: center;
 }
 
 article p {
@@ -61,7 +66,6 @@ footer {
 .col {
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
 }
 
 #start {
@@ -73,6 +77,18 @@ footer {
     font-weight: bold;
     background-color: rgb(15, 240, 15);
     box-shadow: -3px 3px 5px;
+}
+
+#options button {
+    height: 50px;
+    width: 200px;
+    background-color: rgb(247, 214, 172);
+    font-size: 1.6rem;
+    text-align: left;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    font-weight: bold;
 }
 
 /* */

@@ -1,7 +1,7 @@
 const highScoresEl = document.querySelector('a');
 const introEl = document.getElementById('intro');
 const questionEl = document.getElementById('question');
-const ulEl = document.getElementById('options');
+const possAns = document.getElementById('options');
 const startButt = document.getElementById('start');
 const timerEl = document.getElementById('timeLeft');
 
@@ -22,7 +22,7 @@ let allAnswers = [
     ['1. square brackets', '2. curly brackets', '3. parenthesis', '4. quotes'],
     ['1. declare', '2. var', '3. let', '4. const']
 ];
-// let ansLi = [];
+let correctAns = ['3. alerts','2. parenthesis','4. all of the above','4. quotes','1. declare'];
 
 // let question2 = 'The condition of an if/else statement is enclosed in:';
 // let answers2 = ['1. curly brackets', '2. parenthesis', '3. square brackets', '4. quotes'];
@@ -41,7 +41,7 @@ function startQuiz() {
 }
 
 function timer() {
-    setInterval(function() {
+    var timeInterval = setInterval(function() {
         timerEl.textContent = timeLeft;
         timeLeft--;
         if (timeLeft === 0) {
@@ -52,14 +52,26 @@ function timer() {
     },1000);
 }
 
+// Displays Question & respective answer options
 function quiz() {
     questionEl.textContent = questions[i];
     let answers = allAnswers[i];
     for (var j=0; j < answers.length; j++) {
-        let ansLi = document.createElement("li");
-        
-        li1.textContent = answers[j]
+        var ansButt = document.createElement("button");
+        possAns.append(ansButt);
+        ansButt.textContent = answers[j];
     }
+
+    ansButt.addEventListener("click", function(ev) {
+        // ev.preventDefault();
+        if (ansButt.value === correctAns[i]) {
+            ansButt.setAttribute("background-color", "#70D500");
+
+        } else {
+            ansButt.setAttribute("background-color", "#D90E0E");
+        }
+    }
+    )
 }
 
 function gameOver() {
