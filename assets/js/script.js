@@ -1,11 +1,12 @@
-const highScoresEl = document.querySelector('a');
+const mainEl = document.querySelector('main');
 const introEl = document.getElementById('intro');
 const questionEl = document.getElementById('question');
 const possAns = document.getElementById('options');
 const startButt = document.getElementById('start');
 const timerEl = document.getElementById('timeLeft');
-
-var i = 0;
+const quizEl = document.getElementById('quiz');
+const hsButt = document.getElementById('hs');
+const homeButt = document.getElementById('home');
 
 let timeLeft;
 let questions = [
@@ -24,15 +25,7 @@ let allAnswers = [
 ];
 let correctAns = ['3. alerts', '2. parenthesis', '4. all of the above', '4. quotes', '1. declare'];
 
-// let question2 = 'The condition of an if/else statement is enclosed in:';
-// let answers2 = ['1. curly brackets', '2. parenthesis', '3. square brackets', '4. quotes'];
-// let question3 = 'Arrays in JavaScript can be used to store:'
-// let answers3 = ['1. numbers and strings', '2. other arrays', '3. booleans', '4. all of the above'];
-// let question4 = 'String values must be enclosed within ________ when being assigned to variables';
-// let answers4 = ['1. square brackets', '2. curly brackets', '3. parenthesis', '4. quotes'];
-// let question5 = 'Which keyword is NOT used to declare a variable:'
-// let answers5 = ['1. declare', '2. var', '3. let', '4. const'];
-
+// start game function - sets timer, removes landing page element, calls timer function and quiz function
 function startQuiz() {
     timeLeft = 60;
     introEl.remove();
@@ -40,6 +33,16 @@ function startQuiz() {
     quiz();
 }
 
+var i = 0;
+
+// delay function from https://masteringjs.io/tutorials/fundamentals/wait-1-second-then
+// intended to allow users to see if answer was correct or not before going onto next question
+// also delays gameOver function to allow for the above before moving to Game Over
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
+// timer function - calls gameOver function when time runs out or all questions are answered
 function timer() {
     let timeInterval = setInterval(function () {
         timerEl.textContent = timeLeft;
@@ -47,38 +50,44 @@ function timer() {
         if (timeLeft === 0) {
             clearInterval(timeInterval);
             timerEl.textContent = 0;
-            gameOver();
+            delay(50).then(() => {
+                gameOver()});
+        }
+        if (i === questions.length) {
+            clearInterval(timeInterval);
+            delay(50).then(() => {
+                gameOver()});
         }
     }, 1000);
 }
 
-// delay function from https://masteringjs.io/tutorials/fundamentals/wait-1-second-then
-function delay(time) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
-
-
 // Displays Question & respective answer options
 function quiz() {
-    var ansButt = [];
+    let ansButt = [];
 
     questionEl.textContent = questions[i];
     let answers = allAnswers[i];
 
+    if (i < questions.length) {
     for (var j = 0; j < answers.length; j++) {
         ansButt[j] = document.createElement("button");
         possAns.append(ansButt[j]);
         ansButt[j].textContent = answers[j];
         ansButt[j].id = "ansButt" + j;
     };
+    }
 
-    var ansButt1 = document.getElementById('ansButt0');
-    var ansButt2 = document.getElementById('ansButt1');
-    var ansButt3 = document.getElementById('ansButt2');
-    var ansButt4 = document.getElementById('ansButt3');
+    let ansButt1 = document.getElementById('ansButt0');
+    let ansButt2 = document.getElementById('ansButt1');
+    let ansButt3 = document.getElementById('ansButt2');
+    let ansButt4 = document.getElementById('ansButt3');
 
+    // event listener for answer selections
+    // Correct Answers turn Green, wrong answers turn red & deduct 5 seconds from timer
     ansButt.forEach((element) =>
         element.addEventListener("click", function () {
+            // prevents multiple clicks on same question / answers
+            this.disabled = true;
             if (i < questions.length) {
                 if (element.textContent === correctAns[i]) {
                     element.style.backgroundColor = "#70D500";
@@ -87,7 +96,7 @@ function quiz() {
                         ansButt1.remove();
                         ansButt2.remove();
                         ansButt3.remove();
-                        ansButt4.remove();
+                        ansButt4.remove(); 
                         quiz();
                     });
                 } else {
@@ -103,17 +112,72 @@ function quiz() {
                     });
                 }
             }
-            // if (i === questions.length - 1) {
-            //     clearInterval(timeInterval);
-            //     gameOver();
-            // }
         })
     );
 }
 
 function gameOver() {
-    questionEl.textContent = "Game Over";
+    // remove Quiz element
+    quizEl.remove();
+    // Create and append Game Over element
+    let gameOverEl = document.createElement('article');
+    mainEl.append(gameOverEl);
+    
+    let outroEl = document.createElement('h1');
+    outroEl.textContent = "Game Over";
+    gameOverEl.append(outroEl);
+    
+    let outroInstructEl = document.createElement('h2');
+    outroInstructEl.textContent = "Enter your initials to save your score.";
+    gameOverEl.append(outroInstructEl);
+    
+    // create form to submit initials and save timeLeft
+    let initForm = document.createElement('form');
+    initForm.setAttribute('id', 'initialsForm');
+    gameOverEl.append(initForm);
+    
+    let initInput = document.createElement('input');
+    initInput.setAttribute = ('id', 'initials');
+    initForm.append(initInput);
+    
+    let submitButt = document.createElement('button');
+    submitButt.setAttribute('id', 'submitBtn');
+    submitButt.textContent = "Submit";
+    initForm.append(submitButt);
+
+    // what I want to happen event listener
+    submitButt.addEventListener("submit", function(ev) {
+        ev.preventDefault();
+        localStorage.setItem('initials', initInput.value);
+        localStorage.setItem('score', timeLeft);
+        console.log(initInput.value + timeLeft + 'test');
+        highScores();
+    });
+
+    // test event listener
+    // submitButt.addEventListener("submit", function(event) {
+    //     event.stopPropagation();
+    //     event.preventDefault();
+    //     console.log('test');
+    // });
+}
+
+function highScores () {
+    // remove unnecessary page elements
+    introEl.remove();
+    quizEl.remove();
+    timerEl.remove();
+    // create & append High Scores container and sub elements
+    let highScoresEl = document.createElement("article");
+    mainEl.append(highScoresEl);
+    let hsH1El = document.createElement('h1');
+    highScoresEl.append(hsH1El);
+    let hsOl = document.createElement('ol');
+    highScoresEl.append(hsOl);
+
+    hsH1El.textContent = 'High Scores';
 }
 
 startButt.addEventListener("click", startQuiz);
-
+hsButt.addEventListener("click", highScores);
+// homeButt.addEventListener("click", location.reload, useCapture);
