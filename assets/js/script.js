@@ -134,11 +134,7 @@ function gameOver() {
     outroInstructEl.textContent = "Enter your initials to save your score.";
     gameOverEl.append(outroInstructEl);
     
-    // create form to submit initials and save timeLeft
-    // let initForm = document.createElement('form');
-    // initForm.setAttribute('id', 'initialsForm');
-    // gameOverEl.append(initForm);
-    
+    // create input to save initials and save timeLeft
     let initInput = document.createElement('input');
     initInput.setAttribute = ('id', 'initials');
     gameOverEl.append(initInput);
@@ -148,30 +144,28 @@ function gameOver() {
     submitButt.textContent = "Submit";
     gameOverEl.append(submitButt);
 
-    // what I want to happen event listener
     submitButt.addEventListener("click", function(ev) {
         let highScoreObj = {
             initials: initInput.value,
-            score: timeLeft.value
+            score: timeLeft
         }
-        
         highScoresArray.push(highScoreObj);
-
         localStorage.setItem('highScores', JSON.stringify(highScoresArray));
-
         highScores();
     });
 }
 
 function highScores() {
-    // remove unnecessary page elements
+    // reset page elements (remove intro, quiz, game over, previous high scores)
     introEl.remove();
     quizEl.remove();
+    // why is it not recognizing gameOverEl?    
+    // gameOverEl.remove();
 
     // set timeLeft to 0 for consistency with landing page
     timerEl.textContent = 0;
     // create & append High Scores container and sub elements
-    let highScoresEl = document.createElement("article");
+    highScoresEl = document.createElement("article");
     mainEl.append(highScoresEl);
     let hsH1El = document.createElement('h1');
     hsH1El.textContent = 'High Scores';
@@ -179,19 +173,18 @@ function highScores() {
     let hsOl = document.createElement('ol');
     highScoresEl.append(hsOl);
     
-
     // get localStorage data
     let savedScoresArray = JSON.parse(localStorage.getItem('highScores'));
     if (savedScoresArray !== null) {
         savedScoresArray.forEach((element) => {
             let hsLi = document.createElement('li');
-            hsLi.textContent = this.initials + this.score;
+            hsLi.textContent = "" + element.initials + " - " + element.score;
             hsOl.append(hsLi);
         }
         )
     }
 
-    console.log(savedScoresArray);
+    // console.log(savedScoresArray);
 }
 
 startButt.addEventListener("click", startQuiz);
