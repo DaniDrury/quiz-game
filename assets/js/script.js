@@ -47,13 +47,14 @@ function timer() {
     let timeInterval = setInterval(function () {
         timerEl.textContent = timeLeft;
         timeLeft--;
-        if (timeLeft === 0) {
-            clearInterval(timeInterval);
+        // following if statement isn't working - time continues into negatives...
+        if (timeLeft <= 0) {
             timerEl.textContent = 0;
+            clearInterval(timeInterval);
             delay(50).then(() => {
                 gameOver()});
         }
-        if (i === questions.length) {
+        if (timeLeft > 0 && i === questions.length) {
             clearInterval(timeInterval);
             delay(50).then(() => {
                 gameOver()});
@@ -116,6 +117,8 @@ function quiz() {
     );
 }
 
+let highScoresArray = [];
+
 function gameOver() {
     // remove Quiz element
     quizEl.remove();
@@ -132,50 +135,63 @@ function gameOver() {
     gameOverEl.append(outroInstructEl);
     
     // create form to submit initials and save timeLeft
-    let initForm = document.createElement('form');
-    initForm.setAttribute('id', 'initialsForm');
-    gameOverEl.append(initForm);
+    // let initForm = document.createElement('form');
+    // initForm.setAttribute('id', 'initialsForm');
+    // gameOverEl.append(initForm);
     
     let initInput = document.createElement('input');
     initInput.setAttribute = ('id', 'initials');
-    initForm.append(initInput);
+    gameOverEl.append(initInput);
     
     let submitButt = document.createElement('button');
     submitButt.setAttribute('id', 'submitBtn');
     submitButt.textContent = "Submit";
-    initForm.append(submitButt);
+    gameOverEl.append(submitButt);
 
     // what I want to happen event listener
-    submitButt.addEventListener("submit", function(ev) {
-        ev.preventDefault();
-        localStorage.setItem('initials', initInput.value);
-        localStorage.setItem('score', timeLeft);
-        console.log(initInput.value + timeLeft + 'test');
+    submitButt.addEventListener("click", function(ev) {
+        let highScoreObj = {
+            initials: initInput.value,
+            score: timeLeft.value
+        }
+        
+        highScoresArray.push(highScoreObj);
+
+        localStorage.setItem('highScores', JSON.stringify(highScoresArray));
+
         highScores();
     });
-
-    // test event listener
-    // submitButt.addEventListener("submit", function(event) {
-    //     event.stopPropagation();
-    //     event.preventDefault();
-    //     console.log('test');
-    // });
 }
 
-function highScores () {
+function highScores() {
     // remove unnecessary page elements
     introEl.remove();
     quizEl.remove();
-    timerEl.remove();
+
+    // set timeLeft to 0 for consistency with landing page
+    timerEl.textContent = 0;
     // create & append High Scores container and sub elements
     let highScoresEl = document.createElement("article");
     mainEl.append(highScoresEl);
     let hsH1El = document.createElement('h1');
+    hsH1El.textContent = 'High Scores';
     highScoresEl.append(hsH1El);
     let hsOl = document.createElement('ol');
     highScoresEl.append(hsOl);
+    
 
-    hsH1El.textContent = 'High Scores';
+    // get localStorage data
+    let savedScoresArray = JSON.parse(localStorage.getItem('highScores'));
+    if (savedScoresArray !== null) {
+        savedScoresArray.forEach((element) => {
+            let hsLi = document.createElement('li');
+            hsLi.textContent = this.initials + this.score;
+            hsOl.append(hsLi);
+        }
+        )
+    }
+
+    console.log(savedScoresArray);
 }
 
 startButt.addEventListener("click", startQuiz);
