@@ -6,7 +6,7 @@ As a coding bootcamp student, I created this quiz as a means of practicing DOM n
 I created and removed elements, set element attributes, and stored and pulled data from the browser's local storage.
 
 ## Usage
-
+Github Pages URL: https://danidrury.github.io/quiz-game/
 
 ![Quiz Game landing page - Nav bar includes High Scores button, Home link and Time Counter - green start button under intro and instructions](./assets/images/quizgame.png)
 
