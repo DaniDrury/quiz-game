@@ -19,8 +19,7 @@ body {
 
 main {
     height: 80%;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
     padding-bottom: 10%;
     padding-top: 10%;
 }
@@ -40,10 +39,6 @@ h3 {
     font-size: 1.5rem;
 }
 
-article {
-    align-items: center;
-}
-
 article p {
     font-size: 1.6rem;
     line-height: 2em;
@@ -55,6 +50,10 @@ footer {
     height: 60px;
     justify-content: center;
     align-items: center;
+}
+
+ol li {
+    font-size: 2rem;
 }
 
 .hlClr {
@@ -69,6 +68,7 @@ footer {
 .col {
     display: flex;
     flex-flow: column nowrap;
+    align-items: center;
 }
 
 #hs {
@@ -124,11 +124,11 @@ footer {
 }
 
 /* why doesn't the id "initials" work for styling this text input? */
-input {
+#initials {
     height: 30px;
-    width: 100px;
+    width: 70px;
     padding: 12px 10px;
-    margin: 8px 0;
+    margin: 8px 20px;
     font-size: 1.6rem;
     border: 2px solid black;
     border-radius: 4px;
@@ -142,13 +142,6 @@ input {
     background-color: aqua;
     font-weight: bold;
     font-size: 1.7rem;
-}
-
-#initialsForm {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: flex-start;
-    padding: 1rem;
 }
 
 /* */

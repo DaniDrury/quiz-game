@@ -8,7 +8,6 @@ const quizEl = document.getElementById('quiz');
 const hsButt = document.getElementById('hs');
 const homeButt = document.getElementById('home');
 
-let timeLeft;
 let questions = [
     'Commonly used data types do NOT include:',
     'The condition of an if/else statement is enclosed in:',
@@ -24,10 +23,12 @@ let allAnswers = [
     ['1. declare', '2. var', '3. let', '4. const']
 ];
 let correctAns = ['3. alerts', '2. parenthesis', '4. all of the above', '4. quotes', '1. declare'];
+let timeLeft;
 
 // start game function - sets timer, removes landing page element, calls timer function and quiz function
 function startQuiz() {
     timeLeft = 60;
+    // remove introEl
     introEl.remove();
     timer();
     quiz();
@@ -47,13 +48,14 @@ function timer() {
     let timeInterval = setInterval(function () {
         timerEl.textContent = timeLeft;
         timeLeft--;
-        // following if statement isn't working - time continues into negatives...
+        // triggers timeLeft set to 0 and gameOver even if wrong answer penalty puts timer to < 0
         if (timeLeft <= 0) {
             timerEl.textContent = 0;
             clearInterval(timeInterval);
             delay(50).then(() => {
                 gameOver()});
         }
+        // prevents double trigger of gameOver by verifying all questions answered with timeLeft > 0
         if (timeLeft > 0 && i === questions.length) {
             clearInterval(timeInterval);
             delay(50).then(() => {
@@ -87,8 +89,11 @@ function quiz() {
     // Correct Answers turn Green, wrong answers turn red & deduct 5 seconds from timer
     ansButt.forEach((element) =>
         element.addEventListener("click", function () {
-            // prevents multiple clicks on same question / answers
-            this.disabled = true;
+            // prevents multiple clicks on same question
+            ansButt.forEach((element) =>
+                element.disabled = true
+            );
+
             if (i < questions.length) {
                 if (element.textContent === correctAns[i]) {
                     element.style.backgroundColor = "#70D500";
@@ -117,26 +122,26 @@ function quiz() {
     );
 }
 
-let highScoresArray = [];
+let highScoresArray = JSON.parse(localStorage.getItem('highScores')) || [];
+let gameOverEl;
 
 function gameOver() {
-    // remove Quiz element
-    quizEl.remove();
-    // Create and append Game Over element
-    let gameOverEl = document.createElement('article');
-    mainEl.append(gameOverEl);
-    
+    // reset main element
+    document.querySelector('main').innerHTML = "";
+    // Create and append Game Over elements
+    gameOverEl = document.createElement('article');
+    gameOverEl.setAttribute('class', 'col');
+    mainEl.append(gameOverEl);    
     let outroEl = document.createElement('h1');
     outroEl.textContent = "Game Over";
-    gameOverEl.append(outroEl);
-    
+    gameOverEl.append(outroEl);    
     let outroInstructEl = document.createElement('h2');
     outroInstructEl.textContent = "Enter your initials to save your score.";
     gameOverEl.append(outroInstructEl);
     
     // create input to save initials and save timeLeft
     let initInput = document.createElement('input');
-    initInput.setAttribute = ('id', 'initials');
+    initInput.setAttribute('id', 'initials');
     gameOverEl.append(initInput);
     
     let submitButt = document.createElement('button');
@@ -150,22 +155,20 @@ function gameOver() {
             score: timeLeft
         }
         highScoresArray.push(highScoreObj);
+        console.log(highScoresArray);
         localStorage.setItem('highScores', JSON.stringify(highScoresArray));
         highScores();
     });
 }
 
 function highScores() {
-    // reset page elements (remove intro, quiz, game over, previous high scores)
-    introEl.remove();
-    quizEl.remove();
-    // why is it not recognizing gameOverEl?    
-    // gameOverEl.remove();
+    // reset main element
+    document.querySelector('main').innerHTML = "";
 
     // set timeLeft to 0 for consistency with landing page
     timerEl.textContent = 0;
     // create & append High Scores container and sub elements
-    highScoresEl = document.createElement("article");
+    let highScoresEl = document.createElement("article");
     mainEl.append(highScoresEl);
     let hsH1El = document.createElement('h1');
     hsH1El.textContent = 'High Scores';
@@ -178,7 +181,7 @@ function highScores() {
     if (savedScoresArray !== null) {
         savedScoresArray.forEach((element) => {
             let hsLi = document.createElement('li');
-            hsLi.textContent = "" + element.initials + " - " + element.score;
+            hsLi.textContent = element.initials + " - " + element.score + " seconds remaining";
             hsOl.append(hsLi);
         }
         )
