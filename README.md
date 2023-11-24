@@ -11,7 +11,7 @@ I created and removed elements, set element attributes, and stored and pulled da
 ![Quiz Game landing page - Nav bar includes High Scores button, Home link and Time Counter - green start button under intro and instructions](./assets/images/quizgame.png)
 
 ## Credits
-Delay function code from: https://masteringjs.io/tutorials/fundamentals/wait-1-second-then
+Delay function code from: https://masteringjs.io/tutorials/fundamentals/wait-1-second-then  
 Debugging assistance provided by classmate, Sarun Thunyapauksanon
 
 ## License
