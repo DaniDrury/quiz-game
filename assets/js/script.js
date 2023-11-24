@@ -183,10 +183,7 @@ function highScores() {
         }
         )
     }
-
-    // console.log(savedScoresArray);
 }
 
 startButt.addEventListener("click", startQuiz);
 hsButt.addEventListener("click", highScores);
-// homeButt.addEventListener("click", location.reload, useCapture);
